@@ -1,0 +1,41 @@
+The p-value for OA co1 and scale-tag vs. baseline: 0.0840
+The p-value for OA co2 and scale-tag vs. baseline: 0.0020
+The p-value for Miami co1 and scale-tag vs. baseline: 0.4922
+The p-value for Miami co2 and scale-tag vs. baseline: 0.2324
+The p-value for EMS co1 and scale-tag vs. baseline: 0.0273
+The p-value for EMS co2 and scale-tag vs. baseline: 0.0137
+
+The p-value for OA co1 and supervised vs. baseline: 0.1602
+The p-value for OA co2 and supervised vs. baseline: 0.0020
+The p-value for Miami co1 and supervised vs. baseline: 0.4922
+The p-value for Miami co2 and supervised vs. baseline: 0.0137
+The p-value for EMS co1 and supervised vs. baseline: 0.0645
+The p-value for EMS co2 and supervised vs. baseline: 0.0020
+
+The p-value for OA co1 and supervised vs. scale-tag: 0.6953
+The p-value for OA co2 and supervised vs. scale-tag: 0.0059
+The p-value for Miami co1 and supervised vs. scale-tag: 0.7695
+The p-value for Miami co2 and supervised vs. scale-tag: 0.0195
+The p-value for EMS co1 and supervised vs. scale-tag: 0.4316
+The p-value for EMS co2 and supervised vs. scale-tag: 0.0488
+
+The p-value for BE co1 and scale-tag vs. baseline: 0.4922
+The p-value for BE co2 and scale-tag vs. baseline: 0.0098
+The p-value for BPM co1 and scale-tag vs. baseline: 0.3750
+The p-value for BPM co2 and scale-tag vs. baseline: 0.0137
+The p-value for MIS co1 and scale-tag vs. baseline: 0.3223
+The p-value for MIS co2 and scale-tag vs. baseline: 0.0098
+
+The p-value for BE co1 and supervised vs. baseline: 0.2324
+The p-value for BE co2 and supervised vs. baseline: 0.0039
+The p-value for BPM co1 and supervised vs. baseline: 0.0645
+The p-value for BPM co2 and supervised vs. baseline: 0.0020
+The p-value for MIS co1 and supervised vs. baseline: 0.0195
+The p-value for MIS co2 and supervised vs. baseline: 0.0020
+
+The p-value for BE co1 and supervised vs. scale-tag: 0.0840
+The p-value for BE co2 and supervised vs. scale-tag: 0.4922
+The p-value for BPM co1 and supervised vs. scale-tag: 0.0371
+The p-value for BPM co2 and supervised vs. scale-tag: 0.0645
+The p-value for MIS co1 and supervised vs. scale-tag: 0.0137
+The p-value for MIS co2 and supervised vs. scale-tag: 0.3223
