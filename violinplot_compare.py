@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 sns.set_theme(style="white")
 plt.rcParams['text.usetex'] = True
+from scipy.stats import wilcoxon
 
 def compare_cotrain_base_all(file_list, activity_names):
     subcat = []
@@ -61,6 +62,172 @@ def compare_cotrain_base_all(file_list, activity_names):
         df_case2['model'] = model_names[i]
         df_case2_list.append(df_case2)
 
+    # baseline activity values for EMS, Miami, OA
+    df_co1_bl = df_case1_list[0][df_case1_list[0]['cotrain'] == 'co1']
+    df_co1_bl_EMS_vals = df_co1_bl[df_co1_bl['act_name'] == "EMS collar \n placement"]['values'].to_numpy()
+    df_co1_bl_Miami_vals = df_co1_bl[df_co1_bl['act_name'] == "Miami-j collar \n placement"]['values'].to_numpy()
+    df_co1_bl_OA_vals = df_co1_bl[df_co1_bl['act_name'] == "Oxygen \n administration"]['values'].to_numpy()
+    df_co2_bl = df_case1_list[0][df_case1_list[0]['cotrain'] == 'co2']
+    df_co2_bl_EMS_vals = df_co2_bl[df_co2_bl['act_name'] == "EMS collar \n placement"]['values'].to_numpy()
+    df_co2_bl_Miami_vals = df_co2_bl[df_co2_bl['act_name'] == "Miami-j collar \n placement"]['values'].to_numpy()
+    df_co2_bl_OA_vals = df_co2_bl[df_co2_bl['act_name'] == "Oxygen \n administration"]['values'].to_numpy()
+
+    # scale-tag activity values for EMS, Miami, OA
+    df_co1_st = df_case1_list[1][df_case1_list[1]['cotrain'] == 'co1']
+    df_co1_st_EMS_vals = df_co1_st[df_co1_st['act_name'] == "EMS collar \n placement"]['values'].to_numpy()
+    df_co1_st_Miami_vals = df_co1_st[df_co1_st['act_name'] == "Miami-j collar \n placement"]['values'].to_numpy()
+    df_co1_st_OA_vals = df_co1_st[df_co1_st['act_name'] == "Oxygen \n administration"]['values'].to_numpy()
+    df_co2_st = df_case1_list[1][df_case1_list[1]['cotrain'] == 'co2']
+    df_co2_st_EMS_vals = df_co2_st[df_co2_st['act_name'] == "EMS collar \n placement"]['values'].to_numpy()
+    df_co2_st_Miami_vals = df_co2_st[df_co2_st['act_name'] == "Miami-j collar \n placement"]['values'].to_numpy()
+    df_co2_st_OA_vals = df_co2_st[df_co2_st['act_name'] == "Oxygen \n administration"]['values'].to_numpy()
+
+    # supervised activity values for EMS, Miami, OA
+    df_co1_SL = df_case1_list[2][df_case1_list[2]['cotrain'] == 'co1']
+    df_co1_SL_EMS_vals = df_co1_SL[df_co1_SL['act_name'] == "EMS collar \n placement"]['values'].to_numpy()
+    df_co1_SL_Miami_vals = df_co1_SL[df_co1_SL['act_name'] == "Miami-j collar \n placement"]['values'].to_numpy()
+    df_co1_SL_OA_vals = df_co1_SL[df_co1_SL['act_name'] == "Oxygen \n administration"]['values'].to_numpy()
+    df_co2_SL = df_case1_list[2][df_case1_list[2]['cotrain'] == 'co2']
+    df_co2_SL_EMS_vals = df_co2_SL[df_co2_SL['act_name'] == "EMS collar \n placement"]['values'].to_numpy()
+    df_co2_SL_Miami_vals = df_co2_SL[df_co2_SL['act_name'] == "Miami-j collar \n placement"]['values'].to_numpy()
+    df_co2_SL_OA_vals = df_co2_SL[df_co2_SL['act_name'] == "Oxygen \n administration"]['values'].to_numpy()
+
+    
+    # p-values scale-tag vs baseline for EMS, Miami, OA
+    W_statistic_co1_OA_bl_st, p_value_co1_OA_bl_st = wilcoxon(df_co1_bl_OA_vals, df_co1_st_OA_vals)
+    print(f"The p-value for OA co1 and scale-tag vs. baseline: {p_value_co1_OA_bl_st :.4f}")
+    W_statistic_co2_OA_bl_st, p_value_co2_OA_bl_st = wilcoxon(df_co2_bl_OA_vals, df_co2_st_OA_vals)
+    print(f"The p-value for OA co2 and scale-tag vs. baseline: {p_value_co2_OA_bl_st :.4f}")
+
+    W_statistic_co1_Miami_bl_st, p_value_co1_Miami_bl_st = wilcoxon(df_co1_bl_Miami_vals, df_co1_st_Miami_vals)
+    print(f"The p-value for Miami co1 and scale-tag vs. baseline: {p_value_co1_Miami_bl_st :.4f}")
+    W_statistic_co2_Miami_bl_st, p_value_co2_Miami_bl_st = wilcoxon(df_co2_bl_Miami_vals, df_co2_st_Miami_vals)
+    print(f"The p-value for Miami co2 and scale-tag vs. baseline: {p_value_co2_Miami_bl_st :.4f}")
+
+    W_statistic_co1_EMS_bl_st, p_value_co1_EMS_bl_st = wilcoxon(df_co1_bl_EMS_vals, df_co1_st_EMS_vals)
+    print(f"The p-value for EMS co1 and scale-tag vs. baseline: {p_value_co1_EMS_bl_st :.4f}")
+    W_statistic_co2_EMS_bl_st, p_value_co2_EMS_bl_st = wilcoxon(df_co2_bl_EMS_vals, df_co2_st_EMS_vals)
+    print(f"The p-value for EMS co2 and scale-tag vs. baseline: {p_value_co2_EMS_bl_st :.4f}")
+
+
+    # p-values supervised learning vs baseline for EMS, Miami, OA
+    W_statistic_co1_OA_bl_SL, p_value_co1_OA_bl_SL = wilcoxon(df_co1_bl_OA_vals, df_co1_SL_OA_vals)
+    print(f"The p-value for OA co1 and supervised vs. baseline: {p_value_co1_OA_bl_SL :.4f}")
+    W_statistic_co2_OA_bl_SL, p_value_co2_OA_bl_SL = wilcoxon(df_co2_bl_OA_vals, df_co2_SL_OA_vals)
+    print(f"The p-value for OA co2 and supervised vs. baseline: {p_value_co2_OA_bl_SL :.4f}")
+
+    W_statistic_co1_Miami_bl_SL, p_value_co1_Miami_bl_SL = wilcoxon(df_co1_bl_Miami_vals, df_co1_SL_Miami_vals)
+    print(f"The p-value for Miami co1 and supervised vs. baseline: {p_value_co1_Miami_bl_SL :.4f}")
+    W_statistic_co2_Miami_bl_SL, p_value_co2_Miami_bl_SL = wilcoxon(df_co2_bl_Miami_vals, df_co2_SL_Miami_vals)
+    print(f"The p-value for Miami co2 and supervised vs. baseline: {p_value_co2_Miami_bl_SL :.4f}")
+
+    W_statistic_co1_EMS_bl_SL, p_value_co1_EMS_bl_SL = wilcoxon(df_co1_bl_EMS_vals, df_co1_SL_EMS_vals)
+    print(f"The p-value for EMS co1 and supervised vs. baseline: {p_value_co1_EMS_bl_SL :.4f}")
+    W_statistic_co2_EMS_bl_SL, p_value_co2_EMS_bl_SL = wilcoxon(df_co2_bl_EMS_vals, df_co2_SL_EMS_vals)
+    print(f"The p-value for EMS co2 and supervised vs. baseline: {p_value_co2_EMS_bl_SL :.4f}")
+
+
+    # p-values supervised learning vs scale-tag for EMS, Miami, OA
+    W_statistic_co1_OA_st_SL, p_value_co1_OA_st_SL = wilcoxon(df_co1_st_OA_vals, df_co1_SL_OA_vals)
+    print(f"The p-value for OA co1 and supervised vs. scale-tag: {p_value_co1_OA_st_SL :.4f}")
+    W_statistic_co2_OA_st_SL, p_value_co2_OA_st_SL = wilcoxon(df_co2_st_OA_vals, df_co2_SL_OA_vals)
+    print(f"The p-value for OA co2 and supervised vs. scale-tag: {p_value_co2_OA_st_SL :.4f}")
+
+    W_statistic_co1_Miami_st_SL, p_value_co1_Miami_st_SL = wilcoxon(df_co1_st_Miami_vals, df_co1_SL_Miami_vals)
+    print(f"The p-value for Miami co1 and supervised vs. scale-tag: {p_value_co1_Miami_st_SL :.4f}")
+    W_statistic_co2_Miami_st_SL, p_value_co2_Miami_st_SL = wilcoxon(df_co2_st_Miami_vals, df_co2_SL_Miami_vals)
+    print(f"The p-value for Miami co2 and supervised vs. scale-tag: {p_value_co2_Miami_st_SL :.4f}")
+
+    W_statistic_co1_EMS_st_SL, p_value_co1_EMS_st_SL = wilcoxon(df_co1_st_EMS_vals, df_co1_SL_EMS_vals)
+    print(f"The p-value for EMS co1 and supervised vs. scale-tag: {p_value_co1_EMS_st_SL :.4f}")
+    W_statistic_co2_EMS_st_SL, p_value_co2_EMS_st_SL = wilcoxon(df_co2_st_EMS_vals, df_co2_SL_EMS_vals)
+    print(f"The p-value for EMS co2 and supervised vs. scale-tag: {p_value_co2_EMS_st_SL :.4f}")
+
+
+
+    # baseline activity values for MIS, BPM, BE
+    df_co1_bl = df_case2_list[0][df_case2_list[0]['cotrain'] == 'co1']
+    df_co1_bl_MIS_vals = df_co1_bl[df_co1_bl['act_name'] == 'Manual in-line \n stabilization']['values'].to_numpy()
+    df_co1_bl_BPM_vals = df_co1_bl[df_co1_bl['act_name'] == 'Blood pressure \n measurement']['values'].to_numpy()
+    df_co1_bl_BE_vals = df_co1_bl[df_co1_bl['act_name'] == 'Back \n examination']['values'].to_numpy()
+    df_co2_bl = df_case2_list[0][df_case2_list[0]['cotrain'] == 'co2']
+    df_co2_bl_MIS_vals = df_co2_bl[df_co2_bl['act_name'] == 'Manual in-line \n stabilization']['values'].to_numpy()
+    df_co2_bl_BPM_vals = df_co2_bl[df_co2_bl['act_name'] == 'Blood pressure \n measurement']['values'].to_numpy()
+    df_co2_bl_BE_vals = df_co2_bl[df_co2_bl['act_name'] == 'Back \n examination']['values'].to_numpy()
+
+    # scale-tag activity values for MIS, BPM, BE
+    df_co1_st = df_case2_list[1][df_case2_list[1]['cotrain'] == 'co1']
+    df_co1_st_MIS_vals = df_co1_st[df_co1_st['act_name'] == 'Manual in-line \n stabilization']['values'].to_numpy()
+    df_co1_st_BPM_vals = df_co1_st[df_co1_st['act_name'] == 'Blood pressure \n measurement']['values'].to_numpy()
+    df_co1_st_BE_vals = df_co1_st[df_co1_st['act_name'] == 'Back \n examination']['values'].to_numpy()
+    df_co2_st = df_case2_list[1][df_case2_list[1]['cotrain'] == 'co2']
+    df_co2_st_MIS_vals = df_co2_st[df_co2_st['act_name'] == 'Manual in-line \n stabilization']['values'].to_numpy()
+    df_co2_st_BPM_vals = df_co2_st[df_co2_st['act_name'] == 'Blood pressure \n measurement']['values'].to_numpy()
+    df_co2_st_BE_vals = df_co2_st[df_co2_st['act_name'] == 'Back \n examination']['values'].to_numpy()
+
+    # supervised activity values for MIS, BPM, BE
+    df_co1_SL = df_case2_list[2][df_case2_list[2]['cotrain'] == 'co1']
+    df_co1_SL_MIS_vals = df_co1_SL[df_co1_SL['act_name'] == 'Manual in-line \n stabilization']['values'].to_numpy()
+    df_co1_SL_BPM_vals = df_co1_SL[df_co1_SL['act_name'] == 'Blood pressure \n measurement']['values'].to_numpy()
+    df_co1_SL_BE_vals = df_co1_SL[df_co1_SL['act_name'] == 'Back \n examination']['values'].to_numpy()
+    df_co2_SL = df_case2_list[2][df_case2_list[2]['cotrain'] == 'co2']
+    df_co2_SL_MIS_vals = df_co2_SL[df_co2_SL['act_name'] == 'Manual in-line \n stabilization']['values'].to_numpy()
+    df_co2_SL_BPM_vals = df_co2_SL[df_co2_SL['act_name'] == 'Blood pressure \n measurement']['values'].to_numpy()
+    df_co2_SL_BE_vals = df_co2_SL[df_co2_SL['act_name'] == 'Back \n examination']['values'].to_numpy()
+
+
+    # p-values scale-tag vs baseline for MIS, BPM, BE
+    W_statistic_co1_BE_bl_st, p_value_co1_BE_bl_st = wilcoxon(df_co1_bl_BE_vals, df_co1_st_BE_vals)
+    print(f"The p-value for BE co1 and scale-tag vs. baseline: {p_value_co1_BE_bl_st :.4f}")
+    W_statistic_co2_BE_bl_st, p_value_co2_BE_bl_st = wilcoxon(df_co2_bl_BE_vals, df_co2_st_BE_vals)
+    print(f"The p-value for BE co2 and scale-tag vs. baseline: {p_value_co2_BE_bl_st :.4f}")
+
+    W_statistic_co1_BPM_bl_st, p_value_co1_BPM_bl_st = wilcoxon(df_co1_bl_BPM_vals, df_co1_st_BPM_vals)
+    print(f"The p-value for BPM co1 and scale-tag vs. baseline: {p_value_co1_BPM_bl_st :.4f}")
+    W_statistic_co2_BPM_bl_st, p_value_co2_BPM_bl_st = wilcoxon(df_co2_bl_BPM_vals, df_co2_st_BPM_vals)
+    print(f"The p-value for BPM co2 and scale-tag vs. baseline: {p_value_co2_BPM_bl_st :.4f}")
+
+    W_statistic_co1_MIS_bl_st, p_value_co1_MIS_bl_st = wilcoxon(df_co1_bl_MIS_vals, df_co1_st_MIS_vals)
+    print(f"The p-value for MIS co1 and scale-tag vs. baseline: {p_value_co1_MIS_bl_st :.4f}")
+    W_statistic_co2_MIS_bl_st, p_value_co2_MIS_bl_st = wilcoxon(df_co2_bl_MIS_vals, df_co2_st_MIS_vals)
+    print(f"The p-value for MIS co2 and scale-tag vs. baseline: {p_value_co2_MIS_bl_st :.4f}")
+
+
+    # p-values supervised learning vs baseline for MIS, BPM, BE
+    W_statistic_co1_BE_bl_SL, p_value_co1_BE_bl_SL = wilcoxon(df_co1_bl_BE_vals, df_co1_SL_BE_vals)
+    print(f"The p-value for BE co1 and supervised vs. baseline: {p_value_co1_BE_bl_SL :.4f}")
+    W_statistic_co2_BE_bl_SL, p_value_co2_BE_bl_SL = wilcoxon(df_co2_bl_BE_vals, df_co2_SL_BE_vals)
+    print(f"The p-value for BE co2 and supervised vs. baseline: {p_value_co2_BE_bl_SL :.4f}")
+
+    W_statistic_co1_BPM_bl_SL, p_value_co1_BPM_bl_SL = wilcoxon(df_co1_bl_BPM_vals, df_co1_SL_BPM_vals)
+    print(f"The p-value for BPM co1 and supervised vs. baseline: {p_value_co1_BPM_bl_SL :.4f}")
+    W_statistic_co2_BPM_bl_SL, p_value_co2_BPM_bl_SL = wilcoxon(df_co2_bl_BPM_vals, df_co2_SL_BPM_vals)
+    print(f"The p-value for BPM co2 and supervised vs. baseline: {p_value_co2_BPM_bl_SL :.4f}")
+
+    W_statistic_co1_MIS_bl_SL, p_value_co1_MIS_bl_SL = wilcoxon(df_co1_bl_MIS_vals, df_co1_SL_MIS_vals)
+    print(f"The p-value for MIS co1 and supervised vs. baseline: {p_value_co1_MIS_bl_SL :.4f}")
+    W_statistic_co2_MIS_bl_SL, p_value_co2_MIS_bl_SL = wilcoxon(df_co2_bl_MIS_vals, df_co2_SL_MIS_vals)
+    print(f"The p-value for MIS co2 and supervised vs. baseline: {p_value_co2_MIS_bl_SL :.4f}")
+
+
+    # p-values supervised learning vs scale-tag for MIS, BPM, BE
+    W_statistic_co1_BE_st_SL, p_value_co1_BE_st_SL = wilcoxon(df_co1_st_BE_vals, df_co1_SL_BE_vals)
+    print(f"The p-value for BE co1 and supervised vs. scale-tag: {p_value_co1_BE_st_SL :.4f}")
+    W_statistic_co2_BE_st_SL, p_value_co2_BE_st_SL = wilcoxon(df_co2_st_BE_vals, df_co2_SL_BE_vals)
+    print(f"The p-value for BE co2 and supervised vs. scale-tag: {p_value_co2_BE_st_SL :.4f}")
+
+    W_statistic_co1_BPM_st_SL, p_value_co1_BPM_st_SL = wilcoxon(df_co1_st_BPM_vals, df_co1_SL_BPM_vals)
+    print(f"The p-value for BPM co1 and supervised vs. scale-tag: {p_value_co1_BPM_st_SL :.4f}")
+    W_statistic_co2_BPM_st_SL, p_value_co2_BPM_st_SL = wilcoxon(df_co2_st_BPM_vals, df_co2_SL_BPM_vals)
+    print(f"The p-value for BPM co2 and supervised vs. scale-tag: {p_value_co2_BPM_st_SL :.4f}")
+
+    W_statistic_co1_MIS_st_SL, p_value_co1_MIS_st_SL = wilcoxon(df_co1_st_MIS_vals, df_co1_SL_MIS_vals)
+    print(f"The p-value for MIS co1 and supervised vs. scale-tag: {p_value_co1_MIS_st_SL :.4f}")
+    W_statistic_co2_MIS_st_SL, p_value_co2_MIS_st_SL = wilcoxon(df_co2_st_MIS_vals, df_co2_SL_MIS_vals)
+    print(f"The p-value for MIS co2 and supervised vs. scale-tag: {p_value_co2_MIS_st_SL :.4f}")
+    
+
+    # PLOT FIGURES
     combined_df_case1 = pd.concat([df_case1_list[0], df_case1_list[1], df_case1_list[2]])
     combined_df_case2 = pd.concat([df_case2_list[0], df_case2_list[1], df_case2_list[2]])
 
